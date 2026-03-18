@@ -11,7 +11,7 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
       - S-type instructions: `sw`
       - B-type instructions: `beq`
   - Implementation follows the datapath diagram (Figure 4.21) from *Computer Organization and Design: RISC-V Edition (2nd Edition)* by Patterson & Hennessy
-- [ ] **Expanding Single-Cycle CPU**
+- [x] **Expanding Single-Cycle CPU**
   - Adding J-type instructions: `jal`, `jalr`
   - Adding more B-type instructions: `bne`, `blt`, `bge`
 - [ ] **Simple Pipelined CPU**
@@ -27,6 +27,7 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
     ├── ALU.v                  # Arithmetic Logic Unit (ALU)
     ├── ALUCtrl.v              # ALU control signal generator
     ├── Control.v              # Main control unit (instruction decoder)
+    ├── Branch.v               # Branch condition check unit
     ├── DataMemory.v           # Data memory unit (128-byte)
     ├── ImmGen.v               # Immediate generation unit (sign extension)
     ├── InstructionMemory.v    # Instruction memory that loads and stores instructions from TEST_INSTRUCTIONS.txt (128-byte)
