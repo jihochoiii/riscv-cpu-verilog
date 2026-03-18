@@ -31,6 +31,7 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
     ├── DataMemory.v           # Data memory unit (128-byte)
     ├── ImmGen.v               # Immediate generation unit (sign extension)
     ├── InstructionMemory.v    # Instruction memory that loads and stores instructions from TEST_INSTRUCTIONS.txt (128-byte)
+    ├── Makefile               # Build automation script
     ├── Mux2to1.v              # 2-to-1 multiplexer for data paths
     ├── PC.v                   # Program Counter (PC) register
     ├── Register.v             # Register file (x0-x31, x0 is hard-wired to zero)
@@ -41,9 +42,7 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
 ```
 
 ## 🛠️ Simulation
-This project uses **Verilator** for simulation.
-- The C++ testbench (`testbench.cpp`) toggles the clock and generates a `waveform.vcd` file.
-- You can visualize the CPU execution flow using **GTKWave**.
+This project uses **Verilator** for simulation and **GTKWave** for waveform visualization. A `Makefile` is provided to automate the build and execution process.
 ```bash
 # Clone the repository
 git clone https://github.com/jihochoiii/riscv-cpu-verilog.git
@@ -51,14 +50,11 @@ git clone https://github.com/jihochoiii/riscv-cpu-verilog.git
 # Move to the source directory
 cd riscv-cpu-verilog/single-cycle/
 
-# Compile Verilog to C++ and build the executable
-verilator --cc --trace --exe --build -j SingleCycleCPU.v testbench.cpp
-
-# Run the simulation
-./obj_dir/VSingleCycleCPU
+# Compile Verilog to C++, build the executable, and run the simulation
+make
 
 # Open the generated 'waveform.vcd' file
-gtkwave waveform.vcd
+make wave
 ```
 
 ## 📚 Acknowledgments
