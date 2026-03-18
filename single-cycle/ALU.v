@@ -3,7 +3,9 @@ module ALU (
     input      signed [31:0] A,
     input      signed [31:0] B,
     output reg signed [31:0] ALUResult,
-    output                   Zero
+    output                   Zero,
+    output                   Sign,
+    output                   Overflow
 );
     // ALU performs operations based on a 4-bit ALUCtrl signal
     // The Zero detection output is used to support branch instructions like beq
@@ -19,6 +21,9 @@ module ALU (
         endcase
     end
 
+    // Flags for branch instructions
     assign Zero = (ALUResult == 32'b0);
+    assign Sign = ALUResult[31];
+    assign Overflow = (A[31] != B[31]) & (ALUResult[31] != A[31]);
 
 endmodule
