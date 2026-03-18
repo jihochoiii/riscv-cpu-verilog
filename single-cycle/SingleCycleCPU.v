@@ -10,7 +10,7 @@ wire [31:0] PCPlus4;           // The current value of PC + 4
 wire [31:0] PCBranch;          // PC value calculated for the branch instructions
 wire [31:0] PCCalc;            // Next PC candidate: chooses between PCPlus4 and PCBranch
 wire [31:0] PCJump;            // PC value calculated for the jump instructions
-wire [31:0] AddrBase;          // Base for PCJump calculation: PC for jal, ReadData1 for jalr
+wire [31:0] AddrBase;          // Base for PCJump calculation: PC for jal, RegReadData1 for jalr
 
 wire [31:0] Inst;              // The output of the Instruction Memory
 wire signed [31:0] Imm;        // Sign extended immediate value
@@ -22,14 +22,14 @@ wire [3:0] ALUCtrl;
 wire Zero, Sign, Overflow, BrTaken;
 wire PCSrc = Branch & BrTaken;
 
-wire [31:0] WriteData;         // Data to be written into the Register
-wire [31:0] ReadData1;         // Data output from Register Read Port 1
-wire [31:0] ReadData2;         // Data output from Register Read Port 2
-wire [31:0] ReadData;          // Data output from the Data Memory
+wire [31:0] RegWriteData;      // Data to be written into the Register
+wire [31:0] RegReadData1;      // Data output from Register Read Port 1
+wire [31:0] RegReadData2;      // Data output from Register Read Port 2
+wire [31:0] MemReadData;       // Data output from the Data Memory
 
-wire signed [31:0] SrcB;       // ALU source B
+wire signed [31:0] ALUSrcB;    // ALU source B
 wire signed [31:0] ALUResult;  // ALU result
-wire signed [31:0] Result;     // WriteData candidate: chooses between ALUResult and ReadData
+wire signed [31:0] Result;     // RegWriteData candidate: chooses between ALUResult and MemReadData
 
 PC m_PC (
     .CLK(clk),
@@ -68,9 +68,9 @@ Register m_Register (
     .ReadReg1(Inst[19:15]),
     .ReadReg2(Inst[24:20]),
     .WriteReg(Inst[11:7]),
-    .WriteData(WriteData),
-    .ReadData1(ReadData1),
-    .ReadData2(ReadData2)
+    .WriteData(RegWriteData),
+    .ReadData1(RegReadData1),
+    .ReadData2(RegReadData2)
 );
 
 // ======= for validation =======
@@ -112,7 +112,7 @@ Mux2to1 #(.size(32)) m_Mux_PC_2 (
 
 Mux2to1 #(.size(32)) m_Mux_Jump (
     .sel(Inst[3]),
-    .s0(ReadData1),
+    .s0(RegReadData1),
     .s1(PC),
     .out(AddrBase)
 );
@@ -125,9 +125,9 @@ Adder m_Adder_3 (
 
 Mux2to1 #(.size(32)) m_Mux_ALU (
     .sel(ALUSrc),
-    .s0(ReadData2),
+    .s0(RegReadData2),
     .s1(Imm),
-    .out(SrcB)
+    .out(ALUSrcB)
 );
 
 ALUCtrl m_ALUCtrl (
@@ -139,8 +139,8 @@ ALUCtrl m_ALUCtrl (
 
 ALU m_ALU (
     .ALUCtrl(ALUCtrl),
-    .A(ReadData1),
-    .B(SrcB),
+    .A(RegReadData1),
+    .B(ALUSrcB),
     .ALUResult(ALUResult),
     .Zero(Zero),
     .Sign(Sign),
@@ -153,22 +153,22 @@ DataMemory m_DataMemory (
     .MemWrite(MemWrite),
     .MemRead(MemRead),
     .Address(ALUResult),
-    .WriteData(ReadData2),
-    .ReadData(ReadData)
+    .WriteData(RegReadData2),
+    .ReadData(MemReadData)
 );
 
-Mux2to1 #(.size(32)) m_Mux_WriteData_1 (
+Mux2to1 #(.size(32)) m_Mux_RegWriteData_1 (
     .sel(MemtoReg),
     .s0(ALUResult),
-    .s1(ReadData),
+    .s1(MemReadData),
     .out(Result)
 );
 
-Mux2to1 #(.size(32)) m_Mux_WriteData_2 (
+Mux2to1 #(.size(32)) m_Mux_RegWriteData_2 (
     .sel(Jump),
     .s0(Result),
     .s1(PCPlus4),
-    .out(WriteData)
+    .out(RegWriteData)
 );
 
 endmodule
