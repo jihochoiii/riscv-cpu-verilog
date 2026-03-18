@@ -33,10 +33,10 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
     ├── InstructionMemory.v    # Instruction memory that loads and stores instructions from TEST_INSTRUCTIONS.txt (128-byte)
     ├── Mux2to1.v              # 2-to-1 multiplexer for data paths
     ├── PC.v                   # Program Counter (PC) register
-    ├── Register.v             # Register file (x0-x31)
+    ├── Register.v             # Register file (x0-x31, x0 is hard-wired to zero)
     ├── SingleCycleCPU.v       # Top-level module connecting all components
     ├── TEST_INSTRUCTIONS.asm  # Assembly source code for testing
-    ├── TEST_INSTRUCTIONS.txt  # Machine code (Hex) generated from TEST_INSTRUCTIONS.asm
+    ├── TEST_INSTRUCTIONS.txt  # Machine code (binary) generated from TEST_INSTRUCTIONS.asm
     └── testbench.cpp          # Testbench for simulation
 ```
 
@@ -47,12 +47,16 @@ This project uses **Verilator** for simulation.
 ```bash
 # Clone the repository
 git clone https://github.com/jihochoiii/riscv-cpu-verilog.git
+
 # Move to the source directory
 cd riscv-cpu-verilog/single-cycle/
+
 # Compile Verilog to C++ and build the executable
 verilator --cc --trace --exe --build -j SingleCycleCPU.v testbench.cpp
+
 # Run the simulation
 ./obj_dir/VSingleCycleCPU
+
 # Open the generated 'waveform.vcd' file
 gtkwave waveform.vcd
 ```
