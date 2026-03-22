@@ -22,62 +22,9 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
     |  SLT   |  ORI   |        |        |
     |  OR    |  ANDI  |        |        |
     |  AND   |  LW    |        |        |
+  - The finite state machine (FSM) used in the control unit is as follows:
+    ![](multi-cycle/fsm.png)
 - [ ] **Pipelined CPU**
-
-## 📂 Structure
-```text
-.
-├── single-cycle/
-│   ├── ALU.v                  # Arithmetic Logic Unit (ALU)
-│   ├── ALUCtrl.v              # ALU control signal generator
-│   ├── Adder.v                # Adder for PC increment and branch target calculation
-│   ├── Branch.v               # Branch condition check unit
-│   ├── Control.v              # Main control unit
-│   ├── DataMemory.v           # Data memory unit (128-byte)
-│   ├── ImmGen.v               # Immediate generation unit (sign extension)
-│   ├── InstructionMemory.v    # Instruction memory (128-byte)
-│   ├── Makefile               # Build automation script
-│   ├── Mux2to1.v              # 2-to-1 multiplexer for data paths
-│   ├── PC.v                   # Program Counter (PC) register
-│   ├── Register.v             # Register file (x0-x31, x0 is hard-wired to zero)
-│   ├── SingleCycleCPU.v       # Top-level module
-│   ├── TEST_INSTRUCTIONS.asm  # Assembly source code for testing
-│   ├── TEST_INSTRUCTIONS.txt  # Machine code (binary) generated from TEST_INSTRUCTIONS.asm
-│   └── testbench.cpp          # Testbench for simulation
-├── single-cycle-fpga/
-│   ├── ALU.v
-│   ├── ALUCtrl.v
-│   ├── Adder.v
-│   ├── Branch.v
-│   ├── ClockDiv.v             # Clock divider to divide the 50 MHz FPGA clock by 5, resulting in a 10 MHz internal clock
-│   ├── Control.v
-│   ├── DataMemory.v
-│   ├── ImmGen.v
-│   ├── InstructionMemory.v    # Instruction memory (modified to 256-byte capacity)
-│   ├── Mux2to1.v
-│   ├── PC.v
-│   ├── Register.v
-│   ├── SingleCycleCPU.v       # Main Single-Cycle RISC-V CPU core logic
-│   ├── datamem_h.txt          # Data memory initialization: Stores snake patterns and speed control counters
-│   ├── instmem_h.txt          # Machine code (Hex) generated from snake_patterns.asm
-│   ├── snake_patterns.asm     # Assembly source code for the "crawling snake" program
-│   ├── top.v                  # Top-level module
-│   └── top.xdc                # Constraints file
-└── multi-cycle/
-    ├── ALU.v
-    ├── ALUCtrl.v
-    ├── Control.v              # Main control unit (FSM)
-    ├── DataReg.v              # Temporary register
-    ├── ImmGen.v
-    ├── Makefile
-    ├── Memory.v               # Single unified memory (256-byte)
-    ├── MultiCycleCPU.v        # Top-level module
-    ├── Mux2to1.v
-    ├── Register.v
-    ├── TEST_INSTRUCTIONS.asm
-    ├── TEST_INSTRUCTIONS.txt  # Machine code (Hex) generated from TEST_INSTRUCTIONS.asm
-    └── testbench.cpp
-```
 
 ## 🛠️ Simulation
 This project uses **Verilator** for simulation and **GTKWave** for waveform visualization. A `Makefile` is provided to automate the build and execution process.
