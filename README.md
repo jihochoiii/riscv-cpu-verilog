@@ -3,22 +3,26 @@
 A personal project implementing a 32-bit RISC-V processor from scratch using Verilog HDL.
 
 ## 🚀 Progress
-- [x] **Single-Cycle CPU w/ Simple Instructions**
-  - Supports basic RV32I instructions:
-    - R-type instructions: `add`, `sub`, `and`, `or`, `slt`
-    - I-type instructions: `addi`, `andi`, `ori`, `slti`, `lw`
-    - S-type instructions: `sw`
-    - B-type instructions: `beq`
-  - Implementation follows the datapath diagram (Figure 4.21) from *Computer Organization and Design: RISC-V Edition (2nd Edition)* by Patterson & Hennessy.
-- [x] **Expanding Single-Cycle CPU**
-  - Adding J-type instructions: `jal`, `jalr`.
-  - Adding more B-type instructions: `bne`, `blt`, `bge`.
-- [x] **Multi-Cycle CPU w/ Simple Instructions**
-  - Implementation follows the datapath diagram (Figure e4.5.4) from *Computer Organization and Design: RISC-V Edition (2nd Edition)* by Patterson & Hennessy.
-- [ ] **Simple Pipelined CPU**
-  - Implementing a classic 5-stage pipeline architecture.
-- [ ] **Advanced Pipelined CPU**
-  - Implementing hazard detection and forwarding units.
+- [x] **Single-Cycle CPU**
+  - Supported instructions:
+    | R-type | I-type | S-type | J-type | B-type |
+    | :----: | :----: | :----: | :----: | :----: |
+    |  ADD   |  ADDI  |   SW   |  JAL   |  BEQ   |
+    |  SUB   |  SLTI  |        |        |  BNE   |
+    |  SLT   |  ORI   |        |        |  BLT   |
+    |  OR    |  ANDI  |        |        |  BGE   |
+    |  AND   |  LW    |        |        |        |
+    |        |  JALR  |        |        |        |
+- [x] **Multi-Cycle CPU**
+  - Supported instructions:
+    | R-type | I-type | S-type | B-type |
+    | :----: | :----: | :----: | :----: |
+    |  ADD   |  ADDI  |   SW   |  BEQ   |
+    |  SUB   |  SLTI  |        |        |
+    |  SLT   |  ORI   |        |        |
+    |  OR    |  ANDI  |        |        |
+    |  AND   |  LW    |        |        |
+- [ ] **Pipelined CPU**
 
 ## 📂 Structure
 ```text
