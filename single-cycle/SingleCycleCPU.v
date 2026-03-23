@@ -16,10 +16,10 @@ wire [31:0] Inst;              // The output of the Instruction Memory
 wire signed [31:0] Imm;        // Sign extended immediate value
 
 // Control signals
-wire Jump, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite;
-wire [1:0] ALUOp;
+wire Jump, Branch, MemRead, MemtoReg, MemWrite, ALUSrcB, RegWrite;
+wire [1:0] ALUOp, ALUSrcA;
 wire [3:0] ALUCtrl;
-wire Zero, Sign, Overflow, BrTaken;
+wire Zero, Sign, Overflow, Borrow, BrTaken;
 wire PCSrc = Branch & BrTaken;
 
 wire [31:0] RegWriteData;      // Data to be written into the Register
@@ -27,9 +27,12 @@ wire [31:0] RegReadData1;      // Data output from Register Read Port 1
 wire [31:0] RegReadData2;      // Data output from Register Read Port 2
 wire [31:0] MemReadData;       // Data output from the Data Memory
 
-wire signed [31:0] ALUSrcB;    // ALU source B
-wire signed [31:0] ALUResult;  // ALU result
-wire signed [31:0] Result;     // RegWriteData candidate: chooses between ALUResult and MemReadData
+wire signed [31:0] SrcA = (ALUSrcA == 2'b00) ? 32'b0 :  // ALU source A
+                          (ALUSrcA == 2'b01) ? PC :
+                                               RegReadData1;
+wire signed [31:0] SrcB;                                // ALU source B
+wire signed [31:0] ALUResult;                           // ALU result
+wire signed [31:0] Result;                              // RegWriteData candidate: chooses between ALUResult and MemReadData
 
 PC m_PC (
     .CLK(clk),
@@ -57,7 +60,8 @@ Control m_Control (
     .MemtoReg(MemtoReg),
     .ALUOp(ALUOp),
     .MemWrite(MemWrite),
-    .ALUSrc(ALUSrc),
+    .ALUSrcA(ALUSrcA),
+    .ALUSrcB(ALUSrcB),
     .RegWrite(RegWrite)
 );
 
@@ -93,6 +97,7 @@ Branch m_Branch (
     .Zero(Zero),
     .Sign(Sign),
     .Overflow(Overflow),
+    .Borrow(Borrow),
     .BrTaken(BrTaken)
 );
 
@@ -124,10 +129,10 @@ Adder m_Adder_3 (
 );
 
 Mux2to1 #(.size(32)) m_Mux_ALU (
-    .sel(ALUSrc),
+    .sel(ALUSrcB),
     .s0(RegReadData2),
     .s1(Imm),
-    .out(ALUSrcB)
+    .out(SrcB)
 );
 
 ALUCtrl m_ALUCtrl (
@@ -139,12 +144,13 @@ ALUCtrl m_ALUCtrl (
 
 ALU m_ALU (
     .ALUCtrl(ALUCtrl),
-    .A(RegReadData1),
-    .B(ALUSrcB),
+    .A(SrcA),
+    .B(SrcB),
     .ALUResult(ALUResult),
     .Zero(Zero),
     .Sign(Sign),
-    .Overflow(Overflow)
+    .Overflow(Overflow),
+    .Borrow(Borrow)
 );
 
 DataMemory m_DataMemory (

@@ -5,14 +5,19 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
 ## 🚀 Progress
 - [x] **Single-Cycle CPU**
   - Supported instructions:
-    | R-type | I-type | S-type | J-type | B-type |
-    | :----: | :----: | :----: | :----: | :----: |
-    |  ADD   |  ADDI  |   SW   |  JAL   |  BEQ   |
-    |  SUB   |  SLTI  |        |        |  BNE   |
-    |  SLT   |  ORI   |        |        |  BLT   |
-    |  OR    |  ANDI  |        |        |  BGE   |
-    |  AND   |  LW    |        |        |        |
-    |        |  JALR  |        |        |        |
+    | R-type | I-type | S-type | J-type | B-type | U-type |
+    | :----: | :----: | :----: | :----: | :----: | :----: |
+    |  ADD   | ADDI   |   SW   |  JAL   |  BEQ   | LUI    |
+    |  SUB   | SLTI   |        |        |  BNE   | AUIPC  |
+    |  SLL   | SLTIU  |        |        |  BLT   |        |
+    |  SLT   | XORI   |        |        |  BGE   |        |
+    |  SLTU  | ORI    |        |        |  BLTU  |        |
+    |  XOR   | ANDI   |        |        |  BGEU  |        |
+    |  SRL   | SLLI   |        |        |        |        |
+    |  SRA   | SRLI   |        |        |        |        |
+    |  OR    | SRAI   |        |        |        |        |
+    |  AND   | LW     |        |        |        |        |
+    |        | JALR   |        |        |        |        |
 - [x] **Multi-Cycle CPU**
   - Supported instructions:
     | R-type | I-type | S-type | B-type |
