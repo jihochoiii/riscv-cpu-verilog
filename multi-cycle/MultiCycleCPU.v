@@ -11,7 +11,7 @@ wire [31:0] PCBranch;           // PC value calculated for the branch instructio
 
 wire [31:0] Address;            // Target memory address
 wire [31:0] Inst;               // The output of the Instruction Register
-wire signed [31:0] Imm;         // Sign extended immediate value
+wire [31:0] Imm;                // Sign extended immediate value
 
 // Control signals
 wire PCWriteCond, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, PCSource, ALUSrcA, RegWrite;
@@ -28,11 +28,11 @@ wire [31:0] MemReadDataBar;     // Data output from the Memory
 wire [31:0] A, B;
 
 // ALU sources and result
-wire signed [31:0] SrcA;
-wire signed [31:0] SrcB = (ALUSrcB == 2'b00) ? B :
-                          (ALUSrcB == 2'b01) ? 32'd4 :
-                                               Imm;
-wire signed [31:0] ALUResult;
+wire [31:0] SrcA;
+wire [31:0] SrcB = (ALUSrcB == 2'b00) ? B :
+                   (ALUSrcB == 2'b01) ? 32'd4 :
+                                        Imm;
+wire [31:0] ALUResult;
 wire [31:0] ALUOut;             // The output of the ALUOut Register
 
 DataReg m_PC (

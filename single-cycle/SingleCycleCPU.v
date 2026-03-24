@@ -13,7 +13,7 @@ wire [31:0] PCJump;            // PC value calculated for the jump instructions
 wire [31:0] AddrBase;          // Base for PCJump calculation: PC for jal, RegReadData1 for jalr
 
 wire [31:0] Inst;              // The output of the Instruction Memory
-wire signed [31:0] Imm;        // Sign extended immediate value
+wire [31:0] Imm;               // Sign extended immediate value
 
 // Control signals
 wire Jump, Branch, MemRead, MemtoReg, MemWrite, ALUSrcB, RegWrite;
@@ -27,12 +27,12 @@ wire [31:0] RegReadData1;      // Data output from Register Read Port 1
 wire [31:0] RegReadData2;      // Data output from Register Read Port 2
 wire [31:0] MemReadData;       // Data output from the Data Memory
 
-wire signed [31:0] SrcA = (ALUSrcA == 2'b00) ? 32'b0 :  // ALU source A
-                          (ALUSrcA == 2'b01) ? PC :
-                                               RegReadData1;
-wire signed [31:0] SrcB;                                // ALU source B
-wire signed [31:0] ALUResult;                           // ALU result
-wire signed [31:0] Result;                              // RegWriteData candidate: chooses between ALUResult and MemReadData
+wire [31:0] SrcA = (ALUSrcA == 2'b00) ? 32'b0 :  // ALU source A
+                   (ALUSrcA == 2'b01) ? PC :
+                                        RegReadData1;
+wire [31:0] SrcB;                                // ALU source B
+wire [31:0] ALUResult;                           // ALU result
+wire [31:0] Result;                              // RegWriteData candidate: chooses between ALUResult and MemReadData
 
 PC m_PC (
     .CLK(clk),

@@ -2,8 +2,8 @@
 
 module ImmGen (
     /* verilator lint_off UNUSEDSIGNAL */
-    input             [31:0] Inst,
-    output reg signed [31:0] Imm
+    input      [31:0] Inst,
+    output reg [31:0] Imm
 );
 
     wire [6:0] opcode = Inst[6:0];
