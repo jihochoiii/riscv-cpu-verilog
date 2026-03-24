@@ -29,7 +29,16 @@ A personal project implementing a 32-bit RISC-V processor from scratch using Ver
     |  AND   |  LW    |        |        |
   - The finite state machine (FSM) used in the control unit is as follows:
     ![](multi-cycle/fsm.png)
-- [ ] **Pipelined CPU**
+- [x] **Pipelined CPU**
+  - A 5-stage (IF | ID | EX | MEM | WB) pipelined processor with a hazard detection unit and a forwarding unit
+  - Supported instructions:
+    | R-type | I-type | S-type | B-type |
+    | :----: | :----: | :----: | :----: |
+    |  ADD   |  ADDI  |   SW   |  BEQ   |
+    |  SUB   |  SLTI  |        |        |
+    |  SLT   |  ORI   |        |        |
+    |  OR    |  ANDI  |        |        |
+    |  AND   |  LW    |        |        |
 
 ## 🛠️ Simulation
 This project uses **Verilator** for simulation and **GTKWave** for waveform visualization. A `Makefile` is provided to automate the build and execution process.
