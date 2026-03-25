@@ -1,4 +1,4 @@
-# riscv-cpu-verilog
+# riscv-cpu
 
 A personal project implementing a 32-bit RISC-V processor from scratch using Verilog HDL.
 
